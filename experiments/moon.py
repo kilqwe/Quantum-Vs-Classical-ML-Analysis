@@ -1,23 +1,14 @@
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-
-# --- Scikit-Learn (CML) Imports ---
 from sklearn.datasets import make_moons
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans, SpectralClustering
-from sklearn.metrics import adjusted_rand_score # ARI is a metric for clustering accuracy
-
-# --- Qiskit (QML) Imports ---
+from sklearn.metrics import adjusted_rand_score 
 from qiskit.primitives import Sampler
 from qiskit.circuit.library import ZZFeatureMap
 from qiskit_machine_learning.kernels import FidelityQuantumKernel
 from qiskit_machine_learning.state_fidelities import ComputeUncompute
-
-# -------------------------------------------------------------------
-#  STEP 1: LOAD AND PREPARE THE MOONS DATA
-# -------------------------------------------------------------------
-print("Generating and preparing Moons dataset...")
 
 n_samples = 100
 noise = 0.1 # Add some noise to make it non-trivial
@@ -30,12 +21,8 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 print(f"Data prepared: {len(X_scaled)} samples.")
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 2: CLASSICAL MODEL 1 - KMeans (The "Straw Man")
-# -------------------------------------------------------------------
-# KMeans uses Euclidean distance, so it often fails on "curved" shapes like moons.
+
 print("Running Classical KMeans...")
 
 kmeans_model = KMeans(n_clusters=2, random_state=42, n_init=10)
@@ -52,9 +39,6 @@ print(f"Clustering Time:  {kmeans_time:.4f} seconds")
 print(f"Adjusted Rand Index (ARI): {kmeans_ari:.4f}")
 print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 3: CLASSICAL MODEL 2 - Spectral Clustering (RBF Kernel)
-# -------------------------------------------------------------------
 # Spectral clustering uses a kernel (affinity matrix) to find non-linear shapes.
 print("Running Classical Spectral Clustering (RBF Kernel)...")
 
@@ -69,14 +53,9 @@ cml_spectral_ari = adjusted_rand_score(y_true, cml_spectral_labels)
 print("\n--- CML (Spectral RBF) RESULTS ---")
 print(f"Clustering Time:  {cml_spectral_time:.4f} seconds")
 print(f"Adjusted Rand Index (ARI): {cml_spectral_ari:.4f}")
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 4: QUANTUM MODEL (HYBRID) - Spectral Clustering (Quantum Kernel)
-# -------------------------------------------------------------------
-# Here we replace the RBF kernel with a Quantum Kernel matrix.
 print("Running QML Hybrid Spectral Clustering (Quantum Kernel)...")
-print("(This may take a few seconds due to simulation)")
+
 
 # 1. Define the Quantum Kernel
 sampler = Sampler()
@@ -108,25 +87,18 @@ qml_spectral_ari = adjusted_rand_score(y_true, qml_spectral_labels)
 print("\n--- QML Hybrid (Spectral Quantum Kernel) RESULTS ---")
 print(f"Total QML Time:     {qml_total_time:.4f} seconds")
 print(f"Adjusted Rand Index (ARI): {qml_spectral_ari:.4f}")
-print("-" * 50)
-
-# -------------------------------------------------------------------
-#  STEP 5: FINAL COMPARISON & VISUALIZATION
-# -------------------------------------------------------------------
 print("\n--- FINAL COMPARISON (MOONS DATASET - CLUSTERING) ---")
 print(f"CML (KMeans) ARI:        {kmeans_ari:.4f}  |  Total Time: {kmeans_time:.4f}s")
 print(f"CML (Spectral RBF) ARI:  {cml_spectral_ari:.4f}  |  Total Time: {cml_spectral_time:.4f}s")
 print(f"QML (Spectral QK) ARI:   {qml_spectral_ari:.4f}  |  Total Time: {qml_total_time:.4f}s")
-print("-" * 50)
 
-# --- Visualization ---
+# Visualization 
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 titles = ['CML: KMeans', 'CML: Spectral (RBF)', 'QML: Spectral (Quantum)']
 all_labels = [kmeans_labels, cml_spectral_labels, qml_spectral_labels]
 scores = [kmeans_ari, cml_spectral_ari, qml_spectral_ari]
 
 for i, ax in enumerate(axes):
-    # Plot the points, colored by the CLUSTER label found by the algorithm
     scatter = ax.scatter(X_scaled[:, 0], X_scaled[:, 1], c=all_labels[i], cmap='viridis', s=50, edgecolors='k')
     ax.set_title(f"{titles[i]}\nARI Score: {scores[i]:.3f}")
     ax.set_xlabel("Feature 1")

@@ -13,9 +13,6 @@ from qiskit_machine_learning.kernels import FidelityQuantumKernel
 from qiskit_machine_learning.algorithms import QSVC
 from qiskit_machine_learning.state_fidelities import ComputeUncompute
 
-# -------------------------------------------------------------------
-#  STEP 1: BARS AND STRIPES DATASET GENERATOR
-# -------------------------------------------------------------------
 
 def generate_bars_and_stripes(n_samples, n_features_sqrt):
     """
@@ -55,9 +52,6 @@ def generate_bars_and_stripes(n_samples, n_features_sqrt):
 
     return X, y
 
-# -------------------------------------------------------------------
-#  STEP 2: LOAD AND PREPARE THE DATA
-# -------------------------------------------------------------------
 print("Loading Bars and Stripes dataset...")
 
 n_features_sqrt = 3 # 3x3 grid
@@ -66,10 +60,6 @@ n_qubits = n_features_sqrt * n_features_sqrt # 9 qubits
 # --- FULL DATASET ---
 training_size = 100
 test_size = 50
-
-# # --- QUICK TEST (Recommended first!) ---
-# training_size = 20
-# test_size = 10
 
 X_train, y_train = generate_bars_and_stripes(training_size, n_features_sqrt)
 X_test, y_test = generate_bars_and_stripes(test_size, n_features_sqrt)
@@ -81,12 +71,8 @@ X_test_scaled = X_test
 print(f"Data prepared: {len(X_train)} training samples, {len(X_test)} test samples.")
 print(f"Feature dimension (qubits): {n_qubits}")
 target_names_bs = ["Bars", "Stripes"]
-print("-" * 50)
 
 
-# -------------------------------------------------------------------
-#  STEP 3: CLASSICAL MACHINE LEARNING (CML) MODEL
-# -------------------------------------------------------------------
 print("Running Classical SVM (SVC)...")
 
 # 1. Initialize the CML model (using the standard RBF kernel)
@@ -114,9 +100,7 @@ print("\nClassification Report:")
 print(classification_report(y_test, cml_predictions, target_names=target_names_bs, zero_division=0))
 print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 4: QUANTUM MACHINE LEARNING (QML) MODEL
-# -------------------------------------------------------------------
+
 print(f"Running Quantum SVM (QSVC) with {n_qubits} qubits...")
 
 
@@ -152,12 +136,7 @@ print(f"Total QML Time:   {qml_train_time + qml_predict_time:.4f} seconds")
 print(f"\nAccuracy Score:   {qml_accuracy:.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, qml_predictions, target_names=target_names_bs, zero_division=0))
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 5: FINAL COMPARISON
-# -------------------------------------------------------------------
 print("\n--- FINAL COMPARISON (BARS & STRIPES DATASET) ---")
 print(f"CML (SVC) Accuracy:   {cml_accuracy:.4f}  |  Total Time: {cml_train_time + cml_predict_time:.4f}s")
 print(f"QML (QSVC) Accuracy:  {qml_accuracy:.4f}  |  Total Time: {qml_train_time + qml_predict_time:.4f}s")
-print("-" * 50)

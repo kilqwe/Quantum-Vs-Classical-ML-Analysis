@@ -9,9 +9,6 @@ from qiskit_machine_learning.kernels import FidelityQuantumKernel
 from qiskit_machine_learning.algorithms import QSVC
 from qiskit_machine_learning.state_fidelities import ComputeUncompute
 
-# -------------------------------------------------------------------
-#  STEP 1: GENERATE HIGH-DIMENSIONAL PARITY DATA
-# -------------------------------------------------------------------
 def generate_parity_data(n_samples, n_features):
     X = np.random.randint(2, size=(n_samples, n_features))
     y = np.sum(X, axis=1) % 2
@@ -30,13 +27,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print(f"Data prepared: {len(X_train)} training samples.")
 print(f"Dimensionality: {n_qubits} (Hypercube corners: {2**n_qubits})")
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 2: CLASSICAL MACHINE LEARNING (CML)
-# -------------------------------------------------------------------
+
+
 print("Running Classical SVM (RBF Kernel)...")
-# Gamma='scale' usually helps, but even that struggles in high-dim XOR
 cml_model = SVC(kernel='rbf', gamma='scale') 
 
 start_time = time.time()
@@ -46,18 +40,14 @@ cml_accuracy = accuracy_score(y_test, cml_model.predict(X_test))
 
 print("\n--- CML (SVC) RESULTS ---")
 print(f"Accuracy Score:   {cml_accuracy:.4f}")
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 3: QUANTUM MACHINE LEARNING (QML)
-# -------------------------------------------------------------------
 print(f"Running Quantum SVM (QSVC) with ZZFeatureMap ({n_qubits} qubits)...")
 print("This uses 'Full' entanglement to capture global correlations.")
 
 sampler = Sampler()
 fidelity = ComputeUncompute(sampler=sampler)
 
-# CRITICAL: Entanglement='full' connects every qubit to every other qubit.
+# Entanglement='full' connects every qubit to every other qubit.
 # This is computationally expensive but logically necessary for Parity.
 feature_map = ZZFeatureMap(feature_dimension=n_qubits, reps=2, entanglement='full')
 
@@ -71,12 +61,7 @@ qml_accuracy = accuracy_score(y_test, qml_model.predict(X_test))
 
 print("\n--- QML (QSVC) RESULTS ---")
 print(f"Accuracy Score:   {qml_accuracy:.4f}")
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 4: FINAL COMPARISON
-# -------------------------------------------------------------------
 print(f"\n--- FINAL COMPARISON ({n_qubits}-BIT PARITY) ---")
 print(f"CML (SVC) Accuracy:   {cml_accuracy:.4f}")
 print(f"QML (QSVC) Accuracy:  {qml_accuracy:.4f}")
-print("-" * 50)

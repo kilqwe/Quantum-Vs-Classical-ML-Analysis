@@ -9,9 +9,7 @@ from qiskit_machine_learning.kernels import FidelityQuantumKernel
 from qiskit_machine_learning.algorithms import QSVC
 from qiskit_machine_learning.state_fidelities import ComputeUncompute
 
-# -------------------------------------------------------------------
-#  STEP 1: GENERATE PARITY DATASET
-# -------------------------------------------------------------------
+
 def generate_parity_data(n_samples, n_features):
     """Generates n-bit parity data."""
     # Generate random binary strings (0 or 1)
@@ -20,7 +18,7 @@ def generate_parity_data(n_samples, n_features):
     y = np.sum(X, axis=1) % 2
     return X, y
 
-print("Generating 6-bit Parity dataset...")
+
 n_qubits = 6  # 6 features
 n_samples = 100 # Keep it small to show CML struggling to generalize
 
@@ -31,17 +29,13 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42
 )
 
-# No scaling needed (data is binary)
 print(f"Data prepared: {len(X_train)} training samples, {len(X_test)} test samples.")
 print(f"Feature dimension: {n_qubits}")
 target_names_parity = ["Even Parity", "Odd Parity"]
 print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 2: CLASSICAL MACHINE LEARNING (CML)
-# -------------------------------------------------------------------
+
 print("Running Classical SVM (RBF Kernel)...")
-# We use RBF. Linear kernel would fail completely (0.5 accuracy).
 cml_model = SVC(kernel='rbf', gamma='scale') 
 
 start_time = time.time()
@@ -57,18 +51,14 @@ print("\n--- CML (SVC) RESULTS ---")
 print(f"Training Time:    {cml_train_time:.4f} seconds")
 print(f"Accuracy Score:   {cml_accuracy:.4f}")
 print(classification_report(y_test, cml_predictions, target_names=target_names_parity))
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 3: QUANTUM MACHINE LEARNING (QML)
-# -------------------------------------------------------------------
 print(f"Running Quantum SVM (QSVC) with ZZFeatureMap ({n_qubits} qubits)...")
 
 # 1. Quantum Kernel
 sampler = Sampler()
 fidelity = ComputeUncompute(sampler=sampler)
 
-# CRITICAL: Use 'full' entanglement to capture global parity
+# 'full' entanglement to capture global parity
 # 'linear' might fail. 'full' connects everything.
 feature_map = ZZFeatureMap(feature_dimension=n_qubits, reps=2, entanglement='full')
 
@@ -90,12 +80,9 @@ print("\n--- QML (QSVC) RESULTS ---")
 print(f"Training Time:    {qml_train_time:.4f} seconds")
 print(f"Accuracy Score:   {qml_accuracy:.4f}")
 print(classification_report(y_test, qml_predictions, target_names=target_names_parity))
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 4: FINAL COMPARISON
-# -------------------------------------------------------------------
+
+
 print("\n--- FINAL COMPARISON (6-BIT PARITY) ---")
 print(f"CML (SVC) Accuracy:   {cml_accuracy:.4f}")
 print(f"QML (QSVC) Accuracy:  {qml_accuracy:.4f}")
-print("-" * 50)

@@ -61,8 +61,6 @@ print(f"Total CML Time:      {cml_train_time + cml_predict_time:.4f} seconds")
 print(f"\nAccuracy Score:   {cml_accuracy:.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, cml_predictions, target_names=target_names_adhoc, zero_division=0))
-print("-" * 50)
-print("Running Quantum SVM (QSVC)... (This may take a few seconds)")
 
 # 1. Define the Quantum Backend, Fidelity, and Feature Map
 sampler = Sampler()
@@ -96,9 +94,8 @@ print(f"Total QML Time:   {qml_train_time + qml_predict_time:.4f} seconds")
 print(f"\nAccuracy Score:   {qml_accuracy:.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, qml_predictions, target_names=target_names_adhoc, zero_division=0))
-print("-" * 50)
+
 
 print("\n--- FINAL COMPARISON (AD HOC DATASET) ---")
 print(f"CML (SVC) Accuracy:   {cml_accuracy:.4f}  |  Total Time: {cml_train_time + cml_predict_time:.4f}s")
 print(f"QML (QSVC) Accuracy:  {qml_accuracy:.4f}  |  Total Time: {qml_train_time + qml_predict_time:.4f}s")
-print("-" * 50)

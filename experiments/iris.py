@@ -27,20 +27,16 @@ y = y[mask]
 n_qubits = 2
 X = X[:, :n_qubits]
 
-# Define training sizes to iterate over for the graph
-# (Total samples = 100. We will vary training from 10 to 60)
+
 training_sizes = [10, 20, 30, 40, 50, 60]
 
 cml_scores = []
 qml_scores = []
 
-print("Starting Comparison Loop...")
+
 
 for size in training_sizes:
     print(f"\n--- Training Size: {size} ---")
-    
-    # Split data: Train = size, Test = remainder
-    # We use stratify to ensure we get both classes in small splits
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, train_size=size, random_state=42, stratify=y
     )
@@ -71,7 +67,7 @@ for size in training_sizes:
     qml_scores.append(qml_acc)
     print(f"QML Accuracy: {qml_acc:.2f}")
 
-# --- Plotting ---
+
 plt.figure(figsize=(10, 6))
 plt.plot(training_sizes, cml_scores, marker='o', linestyle='-', color='blue', label='CML (SVC-RBF)')
 plt.plot(training_sizes, qml_scores, marker='s', linestyle='--', color='green', label='QML (QSVC)')
@@ -79,7 +75,7 @@ plt.plot(training_sizes, qml_scores, marker='s', linestyle='--', color='green', 
 plt.title('CML vs QML Accuracy on Iris Dataset (Setosa vs Versicolor)')
 plt.xlabel('Training Set Size')
 plt.ylabel('Accuracy Score')
-plt.ylim(0.5, 1.05) # Scale y-axis to see the top clearly
+plt.ylim(0.5, 1.05) 
 plt.grid(True)
 plt.legend()
 

@@ -14,7 +14,6 @@ from qiskit_machine_learning.state_fidelities import ComputeUncompute
 # -------------------------------------------------------------------
 def generate_ising_data(n_samples, n_spins):
     """
-    Generates synthetic data mimicking the Ising Model.
     Class 0: Ordered (Ferromagnetic) - Spins strongly correlated.
     Class 1: Disordered (Paramagnetic) - Spins random.
     """
@@ -50,29 +49,21 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print(f"Data prepared: {len(X_train)} samples.")
 target_names_ising = ["Ordered (Ferro)", "Disordered (Para)"]
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 2: CML (SVC)
-# -------------------------------------------------------------------
 print("Running Classical SVM...")
 cml_model = SVC(kernel='rbf')
 cml_model.fit(X_train, y_train)
 cml_acc = accuracy_score(y_test, cml_model.predict(X_test))
 
 print(f"CML Accuracy: {cml_acc:.4f}")
-print("-" * 50)
 
-# -------------------------------------------------------------------
-#  STEP 3: QML (QSVC)
-# -------------------------------------------------------------------
 print(f"Running QSVC (ZZFeatureMap, {n_qubits} qubits)...")
-print("!!! SLOW !!!")
+
 
 sampler = Sampler()
 fidelity = ComputeUncompute(sampler=sampler)
 
-# The ZZ interaction physically matches the Ising model Hamiltonian!
+# The ZZ interaction physically matches the Ising model Hamiltonian
 feature_map = ZZFeatureMap(feature_dimension=n_qubits, reps=2, entanglement='linear')
 
 qml_kernel = FidelityQuantumKernel(fidelity=fidelity, feature_map=feature_map)
@@ -86,4 +77,3 @@ qml_acc = accuracy_score(y_test, qml_model.predict(X_test))
 
 print(f"QML Accuracy: {qml_acc:.4f}")
 print(f"Training Time: {train_time:.2f}s")
-print("-" * 50)

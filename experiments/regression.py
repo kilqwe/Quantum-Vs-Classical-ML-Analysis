@@ -33,7 +33,7 @@ X_train_scaled = scaler.transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 print(f"Data prepared: {len(X_train)} training samples, {len(X_test)} test samples.")
-print("-" * 50)
+
 
 print("Running Classical SVR...")
 
@@ -54,7 +54,7 @@ print(f"Training Time:    {cml_train_time:.4f} seconds")
 print(f"Prediction Time:  {cml_predict_time:.4f} seconds")
 print(f"Total CML Time:   {cml_train_time + cml_predict_time:.4f} seconds")
 print(f"\nR-squared Score:  {cml_r2:.4f}")
-print("-" * 50)
+
 
 print("Running Quantum SVR (QSVR)... (This may take several minutes)")
 
@@ -80,9 +80,8 @@ print(f"Training Time:    {qml_train_time:.4f} seconds")
 print(f"Prediction Time:  {qml_predict_time:.4f} seconds")
 print(f"Total QML Time:   {qml_train_time + qml_predict_time:.4f} seconds")
 print(f"\nR-squared Score:  {qml_r2:.4f}")
-print("-" * 50)
+
 
 print("\n--- FINAL COMPARISON (DIABETES DATASET - REGRESSION) ---")
 print(f"CML (SVR) R2 Score:   {cml_r2:.4f}  |  Total Time: {cml_train_time + cml_predict_time:.4f}s")
 print(f"QML (QSVR) R2 Score:  {qml_r2:.4f}  |  Total Time: {qml_train_time + qml_predict_time:.4f}s")
-print("-" * 50)

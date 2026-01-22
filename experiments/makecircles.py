@@ -1,39 +1,30 @@
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-
-# --- Scikit-Learn Imports ---
 from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
-
-# --- Qiskit Imports ---
 from qiskit.primitives import Sampler
 from qiskit.circuit.library import ZZFeatureMap, ZFeatureMap
 from qiskit_machine_learning.kernels import FidelityQuantumKernel
 from qiskit_machine_learning.algorithms import QSVC
 from qiskit_machine_learning.state_fidelities import ComputeUncompute
 
-# -------------------------------------------------------------------
-# CONFIGURATION
-# -------------------------------------------------------------------
 n_qubits = 2
-# Iterate over these training sizes
+
 training_sizes = [20, 40, 60, 80, 100] 
 
 cml_scores = []
 zz_scores = []
 z_scores = []
 
-print("Starting Circles Comparison Loop...")
+
 
 for size in training_sizes:
     print(f"\n--- Training Size: {size} ---")
-    
-    # 1. Generate Data (Fresh batch for each size to ensure good distribution)
-    # We generate size + 50 (using 50 for testing)
+ 
     X, y = make_circles(n_samples=size+50, noise=0.1, factor=0.5, random_state=42)
     
     X_train, X_test, y_train, y_test = train_test_split(
@@ -52,7 +43,6 @@ for size in training_sizes:
     cml_scores.append(cml_acc)
     print(f"CML Accuracy: {cml_acc:.2f}")
     
-    # --- Setup Quantum Backend ---
     sampler = Sampler()
     fidelity = ComputeUncompute(sampler=sampler)
     
@@ -76,9 +66,6 @@ for size in training_sizes:
     z_scores.append(z_acc)
     print(f"QML (Z) Accuracy: {z_acc:.2f}")
 
-# -------------------------------------------------------------------
-# PLOTTING
-# -------------------------------------------------------------------
 plt.figure(figsize=(10, 6))
 
 plt.plot(training_sizes, cml_scores, marker='o', linestyle='-', color='blue', label='CML (SVC-RBF)')
