@@ -74,7 +74,7 @@ For simple geometric clusters, the quantum kernel adds unnecessary noise.
 ![Iris Results](results/iris_comparison_plot.png)
 
 <details>
-<summary><strong> Click to see results for other datasets (Higgs, Circles, Moons)</strong></summary>
+<summary><strong> Click to see results for other datasets (Higgs, Circles, AdHoc)</strong></summary>
 
 ### Make Circles (Non-Linear)
 ![Circles Results](results/circles_comparison_plot.png)
