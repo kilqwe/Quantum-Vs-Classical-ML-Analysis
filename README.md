@@ -1,4 +1,3 @@
-# Quantum-Vs-Classical-ML-Analysis
 # Quantum vs. Classical: A Comparative Benchmark of Kernel Methods
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)
@@ -35,21 +34,21 @@ We tested **13 datasets** ranging from standard tabular data (Iris, Diabetes) to
 
 ## Methodology
 
-[cite_start]The core objective was to compare the **Radial Basis Function (RBF)** kernel against the **Fidelity Quantum Kernel**[cite: 72, 78].
+The core objective was to compare the **Radial Basis Function (RBF)** kernel against the **Fidelity Quantum Kernel**.
 
 ### 1. Classical Approach (Baseline)
 * **Algorithm:** Support Vector Classifier (SVC) / SVR.
 * **Implementation:** `scikit-learn`.
-* [cite_start]**Mechanism:** Maps data to infinite-dimensional space using the RBF kernel to find a separating hyperplane [cite: 69-72].
+* **Mechanism:** Maps data to infinite-dimensional space using the RBF kernel to find a separating hyperplane .
 
 ### 2. Quantum Approach (Proposed)
 * **Algorithm:** Quantum SVC / QSVR.
 * **Implementation:** `qiskit-machine-learning`.
-* **Mechanism:** Maps data into a high-dimensional Hilbert space using a parameterized quantum circuit. [cite_start]The kernel is calculated via the "kernel trick" (Fidelity test) [cite: 75-79].
+* **Mechanism:** Maps data into a high-dimensional Hilbert space using a parameterized quantum circuit.The kernel is calculated via the "kernel trick" (Fidelity test).
 * **Feature Maps (Encodings) Used:**
-    * [cite_start]`ZFeatureMap`: For simple geometric data (linear, no entanglement)[cite: 107].
-    * [cite_start]`ZZFeatureMap`: For logic problems (creates pairwise entanglement)[cite: 107].
-    * [cite_start]`PauliFeatureMap`: For complex correlation testing[cite: 109].
+    * `ZFeatureMap`: For simple geometric data (linear, no entanglement).
+    * `ZZFeatureMap`: For logic problems (creates pairwise entanglement).
+    * `PauliFeatureMap`: For complex correlation testing.
 
 ---
 
@@ -59,11 +58,11 @@ Our results highlight two critical insights regarding the utility of QML:
 
 ### 1. The Parity Problem (XOR)
 The **6-bit Parity** dataset represents a problem where the output depends on the global correlation of all inputs (XOR logic).
-* [cite_start]**Classical Failure:** Standard RBF kernels struggle to capture this dependency (Accuracy: ~37%)[cite: 211].
-* [cite_start]**Quantum Success:** Using the `ZZFeatureMap` with entanglement, the quantum kernel naturally maps these correlations, achieving **100% accuracy**[cite: 107, 211].
+* **Classical Failure:** Standard RBF kernels struggle to capture this dependency (Accuracy: ~37%).
+* **Quantum Success:** Using the `ZZFeatureMap` with entanglement, the quantum kernel naturally maps these correlations, achieving **100% accuracy**.
 
 ### 2. The "Simulation Barrier"
-While QML showed accuracy gains in specific niches, the computational cost on a classical simulator was immense. [cite_start]We observed an approximate **10,000x slowdown** due to the exponential cost ($2^n$) of simulating entanglement[cite: 320]. This confirms QML is designed for real QPUs, not simulators.
+While QML showed accuracy gains in specific niches, the computational cost on a classical simulator was immense. We observed an approximate **10,000x slowdown** due to the exponential cost ($2^n$) of simulating entanglement. This confirms QML is designed for real QPUs, not simulators.
 
 ## Case Study
 ### 1. The "Quantum Win" (6-bit Parity)
@@ -83,8 +82,8 @@ For simple geometric clusters, the quantum kernel adds unnecessary noise.
 ### HIGGS Boson (Physics Data)
 ![Higgs Results](results/higgs_comparison_plot.png)
 
-### Moons (Clustering)
-![Moons Results](results/moons_comparison_plot.png)
+### AdHoc (Synthetic)
+![AdHoc Results](results/cml_vs_qml_comparison.png)
 
 </details>
 
