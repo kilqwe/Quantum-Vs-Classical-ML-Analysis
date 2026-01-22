@@ -65,6 +65,29 @@ The **6-bit Parity** dataset represents a problem where the output depends on th
 ### 2. The "Simulation Barrier"
 While QML showed accuracy gains in specific niches, the computational cost on a classical simulator was immense. [cite_start]We observed an approximate **10,000x slowdown** due to the exponential cost ($2^n$) of simulating entanglement[cite: 320]. This confirms QML is designed for real QPUs, not simulators.
 
+## Case Study
+### 1. The "Quantum Win" (6-bit Parity)
+The Parity problem requires global entanglement, which the classical kernel fails to capture.
+![Parity Results](results/parity_comparison_plot.png)
+
+### 2. The "Classical Win" (Iris Dataset)
+For simple geometric clusters, the quantum kernel adds unnecessary noise.
+![Iris Results](results/iris_comparison_plot.png)
+
+<details>
+<summary><strong> Click to see results for other datasets (Higgs, Circles, Moons)</strong></summary>
+
+### Make Circles (Non-Linear)
+![Circles Results](results/circles_comparison_plot.png)
+
+### HIGGS Boson (Physics Data)
+![Higgs Results](results/higgs_comparison_plot.png)
+
+### Moons (Clustering)
+![Moons Results](results/moons_comparison_plot.png)
+
+</details>
+
 ---
 
 ## Repository Structure
